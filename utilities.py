@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 MIN_DISTANCE = 7
-ANSWER_REGION_SIZE = 13
+ANSWER_REGION_SIZE = 12
 WINDOW_SIZE = 15
-MIN_VAL = 90
+MIN_VAL = 235
 
 
 # find interest point in given area
@@ -84,7 +84,7 @@ def get_id(image, line_coor, id_coor):
         for j in range(0, 10):
             region = image[line_coor[j] - ANSWER_REGION_SIZE:line_coor[j] + ANSWER_REGION_SIZE,
                      id_coor[i] - ANSWER_REGION_SIZE:id_coor[i] + ANSWER_REGION_SIZE]
-            x, y, min_val = find_interested_point(region, WINDOW_SIZE)
+            min_val = int(np.mean(region))
             if min_val < MIN_VAL:
                 sbd[j][i] = 1
 
@@ -101,7 +101,8 @@ def get_answer(image, line_coor, ans_coor):
         for j in range(0, 25):
             region = image[line_coor[12 + j] - ANSWER_REGION_SIZE:line_coor[12 + j] + ANSWER_REGION_SIZE,
                      ans_coor[i] - ANSWER_REGION_SIZE:ans_coor[i] + ANSWER_REGION_SIZE]
-            x, y, min_val = find_interested_point(region, WINDOW_SIZE)
+            min_val = int(np.mean(region))
+            print(min_val)
             if min_val < MIN_VAL:
                 answer[j][i] = 1
 

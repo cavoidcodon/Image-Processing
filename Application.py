@@ -56,7 +56,7 @@ class Application(QtWidgets.QMainWindow):
         threshold_global_btn.clicked.connect(self.global_threshold)
         threshold_global_btn.move(30, 100)
 
-        threshold_local_btn = QtWidgets.QPushButton("Local Threshold", self)
+        threshold_local_btn = QtWidgets.QPushButton("Otsu Threshold", self)
         threshold_local_btn.clicked.connect(self.local_threshold)
         threshold_local_btn.move(30, 150)
 
@@ -223,11 +223,11 @@ class Application(QtWidgets.QMainWindow):
         invert_img = cv2.bitwise_not(binary_image)
         opening_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
         opening = cv2.morphologyEx(invert_img, cv2.MORPH_OPEN, opening_kernel)
-        closing_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7))
+        closing_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
         closing = cv2.morphologyEx(opening, cv2.MORPH_CLOSE, closing_kernel)
-        dilation_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-        morphology_image = cv2.dilate(closing, dilation_kernel, iterations=1)
-        morphology_image = cv2.bitwise_not(morphology_image)
+        # dilation_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+        # morphology_image = cv2.dilate(closing, dilation_kernel, iterations=1)
+        morphology_image = cv2.bitwise_not(closing)
         self.morphology_image = morphology_image
 
         directory, name = ntpath.split(self.global_threshold_path)
